@@ -42,7 +42,7 @@ def login_user():
             "version": user.jwt_version
         }, os.getenv("JWT_SECRET"))
         return jsonify({"token": token}), 200
-    return jsonify({"message": "invalid login"}), 401
+    return jsonify({"message": "Invalid login"}), 401
 
 
 @blueprint.get("/me")
