@@ -36,7 +36,7 @@ def remove_image(id):
     img = Image.query.get_or_404(id)
     db.session.delete(img)
     db.session.commit()
-    return jsonify({"message": "Deleted succesfully"})
+    return jsonify({"message": "Deleted succesfully"}), 200
 
 
 @blueprint.get("/images")
@@ -83,6 +83,5 @@ def get_all_actions():
 
 
 @blueprint.get("/action/<int:id>")
-def get_action_images(id):
-    imgs = Image.query.filter_by(action_id=id).all()
-    return jsonify([img.to_dict() for img in imgs]), 200
+def get_action(id):
+    return jsonify(Action.query.get_or_404(id).to_dict()), 200

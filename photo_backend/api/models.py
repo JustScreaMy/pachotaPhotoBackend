@@ -5,9 +5,11 @@ class Action(db.Model):
     __tablename__ = "action"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
+    images = db.relationship("Image",
+                             backref="action")
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name}
+        return {"id": self.id, "name": self.name, "images": [img.to_dict() for img in self.images]}
 
 
 class Image(db.Model):
@@ -16,7 +18,6 @@ class Image(db.Model):
     link = db.Column(db.String)
     description = db.Column(db.String(128))
     action_id = db.Column(db.ForeignKey(Action.id))
-    action = db.relationship("Action")
 
     def to_dict(self):
-        return {"id": self.id, "link": self.link, "description": self.description, "action": self.action.name}
+        return {"id": self.id, "link": self.link, "description": self.description, "action": self.action.id}
