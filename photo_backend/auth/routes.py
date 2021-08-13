@@ -1,11 +1,9 @@
 import os
-from photo_backend.utils import token_required
-from flask import Blueprint, request
-from flask.json import jsonify
-
 import jwt
+from flask import Blueprint, request, jsonify
 
 from photo_backend.extensions import bcrypt, db
+from photo_backend.utils import token_required
 
 from .models import User
 
@@ -14,9 +12,6 @@ blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 @blueprint.post("/register")
 def register_user():
-    if not request.is_json:
-        return jsonify({"message": "The request need to be JSON"}), 400
-
     email = request.json["email"]
     password = request.json["password"]
 
@@ -28,9 +23,6 @@ def register_user():
 
 @blueprint.post("/login")
 def login_user():
-    if not request.is_json:
-        return jsonify({"message": "The request need to be JSON"}), 400
-
     email = request.json["email"]
     password = request.json["password"]
     user = User.query.get_or_404(email)

@@ -3,7 +3,7 @@
 import logging
 import sys
 
-from flask import Flask
+from flask import Flask, request, abort, jsonify
 from flask.wrappers import Response
 from photo_backend.extensions import (
     cors,

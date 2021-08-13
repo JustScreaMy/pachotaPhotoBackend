@@ -1,4 +1,4 @@
-"""empty message
+"""created user and images table
 
 Revision ID: 5abfa41e3c25
 Revises: 8afd859110e4

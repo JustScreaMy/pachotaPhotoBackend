@@ -1,4 +1,4 @@
-"""empty message
+"""edited images table
 
 Revision ID: 8afd859110e4
 Revises: 

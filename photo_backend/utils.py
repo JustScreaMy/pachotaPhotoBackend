@@ -1,8 +1,9 @@
-from functools import wraps
 import os
+from functools import wraps
+
+import jwt
 from flask import request
 from flask.wrappers import Response
-import jwt
 
 
 def token_required(f):
@@ -23,3 +24,4 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
+        
