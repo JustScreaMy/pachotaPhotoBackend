@@ -16,6 +16,7 @@ Flask-Caching = ">=1.7.2"
 pyjwt = "*"
 gunicorn = "*"
 psycopg2 = "*"
+flask-cors = "*"
 
 [dev-packages]
 autopep8 = "*"

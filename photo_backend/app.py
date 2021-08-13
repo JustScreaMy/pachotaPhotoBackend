@@ -5,8 +5,8 @@ import sys
 
 from flask import Flask
 from flask.wrappers import Response
-
 from photo_backend.extensions import (
+    cors,
     bcrypt,
     cache,
     db,
@@ -43,6 +43,7 @@ def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    cors.init_app(app)
     return None
 
 
