@@ -2,6 +2,9 @@
 
 # C extensions
 *.so
+# Pipenv
+Pipfile
+Pipfile.lock
 
 # Packages
 *.egg
