@@ -9,7 +9,6 @@ blueprint = Blueprint("api", __name__, url_prefix="/api")
 
 
 @blueprint.get("/images")
-@token_required
 def get_all_images():
     return jsonify([img.to_dict() for img in Image.query.all()]), 200
 
