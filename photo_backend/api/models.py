@@ -20,4 +20,4 @@ class Image(db.Model):
     action_id = db.Column(db.ForeignKey(Action.id))
 
     def to_dict(self):
-        return {"id": self.id, "link": self.link, "description": self.description, "action": self.action.id}
+        return {"id": self.id, "link": self.link, "description": self.description}
