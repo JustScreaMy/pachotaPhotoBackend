@@ -7,13 +7,14 @@ For local development, use a .env file to set
 environment variables.
 """
 from environs import Env
+from .utils import parse_db_uri
 
 env = Env()
 env.read_env()
 
 ENV = env.str("FLASK_ENV", default="production")
 DEBUG = ENV == "development"
-SQLALCHEMY_DATABASE_URI = env.str("POSTGRE_DATABASE_URI")
+SQLALCHEMY_DATABASE_URI = parse_db_uri(env.str("DATABASE_URL"))
 SECRET_KEY = env.str("SECRET_KEY")
 BCRYPT_LOG_ROUNDS = env.int("BCRYPT_LOG_ROUNDS", default=13)
 DEBUG_TB_ENABLED = DEBUG

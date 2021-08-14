@@ -1,4 +1,5 @@
 import os
+import re
 from functools import wraps
 
 import jwt
@@ -41,3 +42,9 @@ def required_params(*args):
             return fn(*args, **kwargs)
         return wrapper
     return decorator
+
+
+def parse_db_uri(uri: str):
+    if re.search("postgres", uri):
+        return uri.replace("postgres", "postgresql+psycopg2")
+    return uri
