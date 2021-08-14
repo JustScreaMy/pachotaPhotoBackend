@@ -10,7 +10,7 @@ class User(db.Model):
         primary_key=True,
     )
     password = db.Column(db.LargeBinary(128), nullable=False)
-    jwt_version = db.Column(db.Integer)
+    jwt_version = db.Column(db.Integer, nullable=False)
 
     def __init__(self, email, password=None, jwt_version=1, **kwargs):
         """Create instance."""
