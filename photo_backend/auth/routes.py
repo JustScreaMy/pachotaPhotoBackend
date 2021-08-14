@@ -3,7 +3,7 @@ import jwt
 from flask import Blueprint, request, jsonify
 
 from photo_backend.extensions import bcrypt, db
-from photo_backend.utils import token_required
+from photo_backend.utils import token_required, required_params
 
 from .models import User
 
@@ -11,6 +11,7 @@ blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @blueprint.post("/register")
+@required_params("email", "password")
 def register_user():
     email = request.json["email"]
     password = request.json["password"]
@@ -22,6 +23,7 @@ def register_user():
 
 
 @blueprint.post("/login")
+@required_params("email", "password")
 def login_user():
     email = request.json["email"]
     password = request.json["password"]

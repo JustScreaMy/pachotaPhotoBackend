@@ -4,7 +4,7 @@ from photo_backend.extensions import db
 class Action(db.Model):
     __tablename__ = "action"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
+    name = db.Column(db.String(64), unique=True)
     images = db.relationship("Image",
                              backref="action")
 

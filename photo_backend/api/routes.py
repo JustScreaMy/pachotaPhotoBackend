@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from photo_backend.extensions import db
-from photo_backend.utils import token_required
+from photo_backend.utils import token_required, required_params
 
 from .models import Action, Image
 
@@ -16,15 +16,13 @@ IMAGES
 
 @blueprint.post("/image")
 @token_required
+@required_params("link", "description", "action_id")
 def add_image():
-    try:
-        if not Action.query.get(request.json["action_id"]):
-            return jsonify({"message": "Invalid action!"}), 400
-        img = Image(link=request.json["link"],
-                    description=request.json["description"],
-                    action_id=request.json["action_id"])
-    except KeyError as ex:
-        return jsonify({"message": f"Missing {', '.join(ex.args)}"}), 400
+    if not Action.query.get(request.json["action_id"]):
+        return jsonify({"message": "Invalid action!"}), 400
+    img = Image(link=request.json["link"],
+                description=request.json["description"],
+                action_id=request.json["action_id"])
     db.session.add(img)
     db.session.commit()
     return jsonify({"message": "Added succesfully"}), 201
@@ -58,13 +56,23 @@ ACTIONS
 
 @blueprint.post("/action")
 @token_required
+@required_params("name", "images")
 def add_action():
-    try:
-        action = Action(name=request.json["name"])
-    except KeyError as ex:
-        return jsonify({"message": f"Missing {', '.join(ex.args)}"}), 400
+
+    action = Action(name=request.json["name"])
     db.session.add(action)
     db.session.commit()
+
+    images = [
+        Image(link=img["link"],
+              description=img["description"],
+              action_id=action.id)
+        for img in request.json["images"]
+    ]
+
+    db.session.add_all(images)
+    db.session.commit()
+
     return jsonify({"message": "Added succesfully"}), 201
 
 
