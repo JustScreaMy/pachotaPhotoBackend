@@ -6,6 +6,9 @@ import jwt
 from flask import request, jsonify
 from flask.wrappers import Response
 
+from .auth.models import User
+from .extensions import bcrypt
+
 
 def token_required(f):
     @wraps(f)
@@ -19,6 +22,15 @@ def token_required(f):
         try:
             data = jwt.decode(token, os.getenv(
                 "JWT_SECRET"), algorithms=["HS256"])
+            """
+            ImportError: cannot import name 'token_required' from partially initialized module 
+            'photo_backend.utils' (most likely due to a circular import)
+            """
+            user = User.query.get_or_404(data["email"])
+            if not bcrypt.check_password_hash(user.password, data.password):
+                return Response(status=401)
+            if not user.jwt_version == data.jwt_version:
+                return Response(status=401)
         except:
             return Response(status=401)
 
