@@ -1,9 +1,10 @@
+import re
 from flask import Blueprint, jsonify, request
 
 from photo_backend.extensions import db
 from photo_backend.utils import token_required, required_params
 
-from .models import Action, Image
+from .models import Action, Feedback, Image
 
 blueprint = Blueprint("api", __name__, url_prefix="/api")
 
@@ -82,7 +83,7 @@ def remove_action(id):
     action = Action.query.get_or_404(id)
     db.session.delete(action)
     db.session.commit()
-    return jsonify({"message": "Deleted succesfully"})
+    return jsonify({"message": "Deleted succesfully"}), 200
 
 
 @blueprint.get("/actions")
@@ -93,3 +94,41 @@ def get_all_actions():
 @blueprint.get("/action/<int:id>")
 def get_action(id):
     return jsonify(Action.query.get_or_404(id).to_dict()), 200
+
+
+"""
+====================
+Feedback
+====================
+"""
+
+
+@blueprint.post("/feedback")
+@required_params("email", "subject", "message")
+def add_feedback():
+    feedback = Feedback(
+        email=request.json["email"],
+        subject=request.json["subject"],
+        message=request.json["message"],
+    )
+
+    db.session.add(feedback)
+    db.session.commit()
+
+    return jsonify({"message": "Added succesfully"}), 201
+
+
+@blueprint.delete("/feedback/<int:id>")
+@token_required
+def delete_feedback():
+    feedback = Feedback.query.get_or_404(id)
+
+    db.session.delete(feedback)
+    db.session.commit()
+
+    return jsonify({"message": "Deleted succesfully"}), 200
+
+
+@blueprint.get("/feedbacks")
+def get_feedbacks():
+    return jsonify([feedback.to_dict() for feedback in Feedback.query.all()]), 200
