@@ -120,7 +120,7 @@ def add_feedback():
 
 @blueprint.delete("/feedback/<int:id>")
 @token_required
-def delete_feedback():
+def delete_feedback(id):
     feedback = Feedback.query.get_or_404(id)
 
     db.session.delete(feedback)
