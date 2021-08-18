@@ -13,10 +13,8 @@ from photo_backend.extensions import (
     migrate,
 )
 
-from photo_backend import (
-    api,
-    auth
-)
+from photo_backend.api.routes import blueprint as api_blueprint
+from photo_backend.auth.routes import blueprint as auth_blueprint
 
 
 def create_app(config_object="photo_backend.settings"):
@@ -49,8 +47,8 @@ def register_extensions(app):
 
 def register_blueprints(app):
     """Register Flask blueprints."""
-    app.register_blueprint(api.routes.blueprint)
-    app.register_blueprint(auth.routes.blueprint)
+    app.register_blueprint(api_blueprint)
+    app.register_blueprint(auth_blueprint)
     return None
 
 

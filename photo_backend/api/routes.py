@@ -18,7 +18,7 @@ IMAGES
 @blueprint.post("/image")
 @token_required
 @required_params("link", "description", "action_id")
-def add_image():
+def add_image(user):
     if not Action.query.get(request.json["action_id"]):
         return jsonify({"message": "Invalid action!"}), 400
     img = Image(link=request.json["link"],
@@ -31,7 +31,7 @@ def add_image():
 
 @blueprint.delete("/image/<int:id>")
 @token_required
-def remove_image(id):
+def remove_image(user, id):
     img = Image.query.get_or_404(id)
     db.session.delete(img)
     db.session.commit()
@@ -58,7 +58,7 @@ ACTIONS
 @blueprint.post("/action")
 @token_required
 @required_params("name", "images")
-def add_action():
+def add_action(user):
 
     action = Action(name=request.json["name"])
     db.session.add(action)
@@ -79,7 +79,7 @@ def add_action():
 
 @blueprint.delete("/action/<int:id>")
 @token_required
-def remove_action(id):
+def remove_action(user, id):
     action = Action.query.get_or_404(id)
     db.session.delete(action)
     db.session.commit()
@@ -120,7 +120,7 @@ def add_feedback():
 
 @blueprint.delete("/feedback/<int:id>")
 @token_required
-def delete_feedback(id):
+def delete_feedback(user, id):
     feedback = Feedback.query.get_or_404(id)
 
     db.session.delete(feedback)
