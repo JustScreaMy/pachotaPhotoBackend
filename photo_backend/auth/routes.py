@@ -33,7 +33,7 @@ def login_user():
         token = jwt.encode({
             "email": email,
             "password": password,
-            "version": user.jwt_version
+            "jwt_version": user.jwt_version
         }, os.getenv("JWT_SECRET"))
         return jsonify({"token": token}), 200
     return jsonify({"message": "Invalid login"}), 401
@@ -41,8 +41,5 @@ def login_user():
 
 @blueprint.get("/me")
 @token_required
-def get_user():
-    data = jwt.decode(request.headers["x-access-token"], os.getenv(
-        "JWT_SECRET"), algorithms=["HS256"])
-    user = User.query.get_or_404(data["email"])
+def get_user(user):
     return jsonify({"email": user.email, "token_version": user.jwt_version}), 200
